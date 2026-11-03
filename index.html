@@ -80,6 +80,7 @@
       <div class="hero__cta rv d3">
         <a class="btn btn--solid" href="#project">VIEW FEATURED PROJECT</a>
         <a class="btn" href="https://github.com/Akshat8657" target="_blank" rel="noopener">GITHUB ↗</a>
+        <a class="btn" href="assets/Akshat_Tiwari_Resume.pdf" download="Akshat_Tiwari_Resume.pdf">DOWNLOAD RESUME ↓</a>
       </div>
     </div>
 
@@ -190,6 +191,18 @@
         <p class="proj__foot"><span>FULL-STACK // ROLE-BASED ACCESS // AI ASSISTANT</span><span>FILE 002 // 2026</span></p>
       </article>
 
+      <div class="gallery rv" id="gallery">
+        <p class="gallery__head">SCREENSHOTS // DEMO SCHOOL WITH SAMPLE DATA <span class="gallery__hint">click to enlarge</span></p>
+        <ul class="gallery__grid" aria-label="Timetable Management System screenshots">
+          <li><button class="gallery__item" type="button" data-full="assets/screenshots/01-dashboard.webp" data-caption="HOD dashboard — the whole school at a glance"><img src="assets/screenshots/01-dashboard-thumb.webp" width="600" height="351" alt="HOD dashboard: today's absents, substitutions, subjects short of hours, publish status" loading="lazy"><span class="gallery__cap">01 // HOD dashboard — the whole school at a glance</span></button></li>
+          <li><button class="gallery__item" type="button" data-full="assets/screenshots/02-generation.webp" data-caption="Automatic generation — three scored solutions in seconds"><img src="assets/screenshots/02-generation-thumb.webp" width="600" height="351" alt="Generate Timetable screen with a finished run and three scored solutions A, B and C" loading="lazy"><span class="gallery__cap">02 // Automatic generation — three scored solutions in seconds</span></button></li>
+          <li><button class="gallery__item" type="button" data-full="assets/screenshots/03-grid-editor.webp" data-caption="Draft grid editor — drag and drop with live clash checks"><img src="assets/screenshots/03-grid-editor-thumb.webp" width="600" height="351" alt="Weekly draft grid editor showing placed lectures per period and day with completeness 100%" loading="lazy"><span class="gallery__cap">03 // Draft grid editor — drag and drop with live clash checks</span></button></li>
+          <li><button class="gallery__item" type="button" data-full="assets/screenshots/04-timetable.webp" data-caption="Published school timetable — PDF and Excel export"><img src="assets/screenshots/04-timetable-thumb.webp" width="600" height="351" alt="Published timetables screen with school master view, filters and PDF/Excel buttons" loading="lazy"><span class="gallery__cap">04 // Published school timetable — PDF and Excel export</span></button></li>
+          <li><button class="gallery__item" type="button" data-full="assets/screenshots/05-substitution.webp" data-caption="Teacher absent — ranked substitute candidates with one-tap offers"><img src="assets/screenshots/05-substitution-thumb.webp" width="600" height="351" alt="Find a substitute dialog listing ranked free teachers with reasons and Send offers button" loading="lazy"><span class="gallery__cap">05 // Teacher absent — ranked substitute candidates with one-tap offers</span></button></li>
+          <li><button class="gallery__item" type="button" data-full="assets/screenshots/06-ai-assistant.webp" data-caption="AI assistant — plain questions answered from the live timetable"><img src="assets/screenshots/06-ai-assistant-thumb.webp" width="600" height="351" alt="AI Assistant screen answering which teachers are free in period 2 tomorrow" loading="lazy"><span class="gallery__cap">06 // AI assistant — plain questions answered from the live timetable</span></button></li>
+        </ul>
+      </div>
+
       <article class="proj proj--soon rv" aria-label="More projects coming soon">
         <p class="proj__top">PROJECT FILE 003 // PENDING <span class="proj__status">STATUS: QUEUED</span></p>
         <h3 class="proj__title">MORE PROJECTS LOADING...</h3>
@@ -251,6 +264,11 @@
           <span><b>EMAIL</b><small>Akshattiwari865747@gmail.com</small></span>
           <span class="cbtn__arrow" aria-hidden="true">↗</span>
         </a>
+        <a class="cbtn rv d3" href="assets/Akshat_Tiwari_Resume.pdf" download="Akshat_Tiwari_Resume.pdf">
+          <span class="cbtn__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></svg></span>
+          <span><b>RESUME</b><small>One-page PDF · download</small></span>
+          <span class="cbtn__arrow" aria-hidden="true">↓</span>
+        </a>
       </div>
     </div>
   </section>
@@ -269,6 +287,16 @@
     <p class="foot__copy">© <span id="year">2026</span> AKSHAT TIWARI · PLAIN HTML, CSS &amp; JS · HOSTED ON GITHUB PAGES</p>
   </div>
 </footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer" hidden>
+  <button class="lightbox__close" type="button" aria-label="Close">✕</button>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous screenshot">‹</button>
+  <figure class="lightbox__fig">
+    <img class="lightbox__img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
+    <figcaption class="lightbox__cap"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next screenshot">›</button>
+</div>
 
 <script src="js/main.js" defer></script>
 </body>

@@ -74,6 +74,46 @@
     if (img.complete && img.naturalWidth === 0 && img.src) markOffline(img);
   });
 
+  /* ---- screenshot gallery: click-to-enlarge lightbox ---- */
+  var lb = d.getElementById('lightbox');
+  var items = Array.prototype.slice.call(d.querySelectorAll('.gallery__item'));
+  if (lb && items.length) {
+    var lbImg = lb.querySelector('.lightbox__img');
+    var lbCap = lb.querySelector('.lightbox__cap');
+    var current = -1, lastFocus = null;
+    var show = function (i) {
+      current = (i + items.length) % items.length;
+      var b = items[current];
+      lbImg.src = b.getAttribute('data-full');
+      lbImg.alt = b.querySelector('img').alt;
+      lbCap.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0') + ' — ' + b.getAttribute('data-caption');
+    };
+    var open = function (i) {
+      lastFocus = d.activeElement;
+      show(i);
+      lb.hidden = false;
+      d.body.classList.add('lightbox-open');
+      lb.querySelector('.lightbox__close').focus();
+    };
+    var close = function () {
+      lb.hidden = true;
+      d.body.classList.remove('lightbox-open');
+      lbImg.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    };
+    items.forEach(function (b, i) { b.addEventListener('click', function () { open(i); }); });
+    lb.querySelector('.lightbox__close').addEventListener('click', close);
+    lb.querySelector('.lightbox__nav--prev').addEventListener('click', function () { show(current - 1); });
+    lb.querySelector('.lightbox__nav--next').addEventListener('click', function () { show(current + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+    d.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(current + 1);
+      else if (e.key === 'ArrowLeft') show(current - 1);
+    });
+  }
+
   /* ---- footer year ---- */
   var y = d.getElementById('year');
   if (y) y.textContent = String(new Date().getFullYear());
