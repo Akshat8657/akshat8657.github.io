@@ -24,14 +24,22 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
-<script>document.documentElement.classList.add('js');</script>
+<script>document.documentElement.classList.add('js');try{if(!sessionStorage.getItem('ak-boot')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('intro');}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+
+<!-- boot intro: shown once per browser session (html.intro), typed by js/main.js, skippable by click/tap/key -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot__box">
+    <p class="boot__tag"><b>AKSHAT // TIWARI</b><span>CASE FILE 001</span></p>
+    <pre class="boot__log"><span id="boot-log"></span><i class="boot__cur"></i></pre>
+    <div class="boot__bar"><i></i></div>
+    <p class="boot__skip">CLICK, TAP OR PRESS ANY KEY TO SKIP</p>
+  </div>
+</div>
 
 <!-- texture layers: grid, noise, scanlines, moving red line (CSS only) -->
 <div class="fx fx--grid" aria-hidden="true"></div>
@@ -61,10 +69,10 @@
     <span class="brk tr" aria-hidden="true"></span>
     <span class="brk bl" aria-hidden="true"></span>
     <span class="brk br" aria-hidden="true"></span>
-    <p class="hero__corner tl">FILE 001 // OPERATION: BUILD</p>
-    <p class="hero__corner tr">IDEAS / CODE / BUILD / REPEAT</p>
-    <p class="hero__corner bl">SYS.STATUS: ONLINE</p>
-    <p class="hero__corner br">SCROLL ↓</p>
+    <p class="hero__corner tl" style="--i:0">FILE 001 // OPERATION: BUILD</p>
+    <p class="hero__corner tr" style="--i:1">IDEAS / CODE / BUILD / REPEAT</p>
+    <p class="hero__corner bl" style="--i:2">SYS.STATUS: ONLINE</p>
+    <p class="hero__corner br" style="--i:3">SCROLL ↓</p>
     <div class="hero__glow" aria-hidden="true"></div>
 
     <div class="wrap hero__in">
@@ -101,26 +109,26 @@
           <p>Mobile apps, web apps and admin panels — from the first idea to a finished product that people actually use.</p>
           <p>Focus on <b class="k">security</b>, <b class="k">speed</b> and <b class="k">polish</b>: clean code, tested features, no half-done work.</p>
         </div>
-        <div class="cards4">
-          <article class="card rv">
+        <div class="cards4 rv" data-stagger>
+          <article class="card">
             <span class="card__num">01</span>
             <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 7.5v9L12 21l9-4.5v-9L12 3z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></svg>
             <h3><b>BUILD</b> ideas</h3>
             <p>From a rough idea to a working product — apps, dashboards and admin panels.</p>
           </article>
-          <article class="card rv d1">
+          <article class="card">
             <span class="card__num">02</span>
             <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
             <h3><b>TEST</b> everything</h3>
             <p>Every feature is tested before it ships. Edge cases included.</p>
           </article>
-          <article class="card rv d2">
+          <article class="card">
             <span class="card__num">03</span>
             <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
             <h3><b>SECURE</b> by design</h3>
             <p>Auth, roles and data rules are built in from day one — not added later.</p>
           </article>
-          <article class="card rv d3">
+          <article class="card">
             <span class="card__num">04</span>
             <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
             <h3><b>SHIP</b> results</h3>
@@ -135,7 +143,7 @@
   <section class="sec" id="stack" aria-labelledby="stack-h">
     <div class="wrap">
       <h2 class="sec__head rv" id="stack-h">// 02 TECH STACK <span class="sec__tag">SECTION 02 / 05</span></h2>
-      <ul class="stack rv">
+      <ul class="stack rv" data-stagger>
         <li class="tile"><img src="assets/icons/python.svg" alt="" width="40" height="40" loading="lazy"><span>PYTHON</span></li>
         <li class="tile"><img src="assets/icons/fastapi.svg" alt="" width="40" height="40" loading="lazy"><span>FASTAPI</span></li>
         <li class="tile"><img src="assets/icons/react.svg" alt="" width="40" height="40" loading="lazy"><span>REACT</span></li>
@@ -160,7 +168,7 @@
     <div class="wrap">
       <h2 class="sec__head rv" id="project-h">// 03 FEATURED PROJECT <span class="sec__tag">SECTION 03 / 05</span></h2>
 
-      <article class="proj rv" aria-labelledby="proj-title">
+      <article class="proj rv" data-tilt aria-labelledby="proj-title">
         <p class="proj__top">PROJECT FILE 002 // FEATURED <span class="proj__status"><i class="dot" aria-hidden="true"></i>STATUS: ACTIVE</span></p>
         <div class="proj__grid">
           <div>
@@ -193,7 +201,7 @@
 
       <div class="gallery rv" id="gallery">
         <p class="gallery__head">SCREENSHOTS // DEMO SCHOOL WITH SAMPLE DATA <span class="gallery__hint">click to enlarge</span></p>
-        <ul class="gallery__grid" aria-label="Timetable Management System screenshots">
+        <ul class="gallery__grid" data-stagger aria-label="Timetable Management System screenshots">
           <li><button class="gallery__item" type="button" data-full="assets/screenshots/01-dashboard.webp" data-caption="HOD dashboard — the whole school at a glance"><img src="assets/screenshots/01-dashboard-thumb.webp" width="600" height="351" alt="HOD dashboard: today's absents, substitutions, subjects short of hours, publish status" loading="lazy"><span class="gallery__cap">01 // HOD dashboard — the whole school at a glance</span></button></li>
           <li><button class="gallery__item" type="button" data-full="assets/screenshots/02-generation.webp" data-caption="Automatic generation — three scored solutions in seconds"><img src="assets/screenshots/02-generation-thumb.webp" width="600" height="351" alt="Generate Timetable screen with a finished run and three scored solutions A, B and C" loading="lazy"><span class="gallery__cap">02 // Automatic generation — three scored solutions in seconds</span></button></li>
           <li><button class="gallery__item" type="button" data-full="assets/screenshots/03-grid-editor.webp" data-caption="Draft grid editor — drag and drop with live clash checks"><img src="assets/screenshots/03-grid-editor-thumb.webp" width="600" height="351" alt="Weekly draft grid editor showing placed lectures per period and day with completeness 100%" loading="lazy"><span class="gallery__cap">03 // Draft grid editor — drag and drop with live clash checks</span></button></li>
@@ -203,7 +211,7 @@
         </ul>
       </div>
 
-      <article class="proj rv" aria-labelledby="proj2-title">
+      <article class="proj rv" data-tilt aria-labelledby="proj2-title">
         <p class="proj__top">PROJECT FILE 003 // PERSONAL <span class="proj__status"><i class="dot" aria-hidden="true"></i>STATUS: COMPLETE</span></p>
         <div class="proj__grid">
           <div>
@@ -211,7 +219,7 @@
             <div class="proj__rule" aria-hidden="true"></div>
             <p class="proj__desc">Web tool that finds local businesses by category and area and saves them as leads — name, address, phone, rating — with a map view. Covers 28 states, 250+ cities and 83 business categories across India.</p>
             <dl class="proj__meta">
-              <div><dt>COVERAGE</dt><dd>28 states · 250+ cities · 83 categories</dd></div>
+              <div><dt>COVERAGE</dt><dd><span data-count="28">28</span> states · <span data-count="250" data-suffix="+">250+</span> cities · <span data-count="83">83</span> categories</dd></div>
               <div><dt>MAP</dt><dd>Leaflet + OpenStreetMap</dd></div>
               <div><dt>EXPORT</dt><dd>Excel (.xlsx)</dd></div>
             </dl>
@@ -234,7 +242,7 @@
 
       <div class="gallery gallery--two rv" id="gallery-leadfinder">
         <p class="gallery__head">SCREENSHOTS // MOCK DATA, NO LIVE API <span class="gallery__hint">click to enlarge</span></p>
-        <ul class="gallery__grid" aria-label="Local Business Lead Finder screenshots">
+        <ul class="gallery__grid" data-stagger aria-label="Local Business Lead Finder screenshots">
           <li><button class="gallery__item" type="button" data-full="assets/screenshots/leadfinder/01-search.webp" data-caption="Search — keyword plus state, city and category filters"><img src="assets/screenshots/leadfinder/01-search-thumb.webp" width="600" height="351" alt="Lead Finder search screen with keyword box and state, city, category and rating filters" loading="lazy"><span class="gallery__cap">01 // Search — keyword plus state, city and category filters</span></button></li>
           <li><button class="gallery__item" type="button" data-full="assets/screenshots/leadfinder/02-results.webp" data-caption="Results — name, address and rating; select rows, fetch details, export"><img src="assets/screenshots/leadfinder/02-results-thumb.webp" width="600" height="351" alt="Results table listing businesses with address and rating, selection boxes and export button" loading="lazy"><span class="gallery__cap">02 // Results — name, address and rating; select rows, fetch details, export</span></button></li>
           <li><button class="gallery__item" type="button" data-full="assets/screenshots/leadfinder/03-map.webp" data-caption="Map view — every result pinned on OpenStreetMap"><img src="assets/screenshots/leadfinder/03-map-thumb.webp" width="600" height="351" alt="Map view with result pins on an OpenStreetMap map of Bangalore" loading="lazy"><span class="gallery__cap">03 // Map view — every result pinned on OpenStreetMap</span></button></li>
@@ -260,7 +268,7 @@
           <p><b>github.com/Akshat8657</b> — code, commits and experiments live here.</p>
           <a class="btn btn--solid" href="https://github.com/Akshat8657" target="_blank" rel="noopener">OPEN GITHUB PROFILE ↗</a>
         </div>
-        <div class="gh__cards rv d1">
+        <div class="gh__cards rv" data-stagger>
           <figure class="stat">
             <img src="https://github-readme-stats.vercel.app/api?username=Akshat8657&amp;show_icons=true&amp;hide_border=true&amp;bg_color=0D1117&amp;title_color=E53935&amp;text_color=FFFFFF&amp;icon_color=E53935&amp;ring_color=E53935" alt="GitHub stats card for Akshat8657" loading="lazy" data-stat>
             <figcaption class="stat__off">STATS SERVICE OFFLINE // CARD LOADS WHEN IT IS BACK</figcaption>
@@ -287,23 +295,23 @@
     <div class="wrap">
       <h2 class="sec__head rv" id="connect-h">// 05 CONNECT <span class="sec__tag">SECTION 05 / 05</span></h2>
       <p class="connect__lead rv">Want to build something, talk tech or share an idea? Reach me here.</p>
-      <div class="connect">
-        <a class="cbtn rv" href="https://github.com/Akshat8657" target="_blank" rel="noopener">
+      <div class="connect rv" data-stagger>
+        <a class="cbtn" href="https://github.com/Akshat8657" target="_blank" rel="noopener">
           <span class="cbtn__ico"><img src="assets/icons/github.svg" alt="" width="22" height="22"></span>
           <span><b>GITHUB</b><small>github.com/Akshat8657</small></span>
           <span class="cbtn__arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="cbtn rv d1" href="https://www.linkedin.com/in/akshat-tiwari-146b37296/" target="_blank" rel="noopener">
+        <a class="cbtn" href="https://www.linkedin.com/in/akshat-tiwari-146b37296/" target="_blank" rel="noopener">
           <span class="cbtn__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9" width="3.4" height="11.5" fill="currentColor"/><circle cx="5.2" cy="5.4" r="2" fill="currentColor"/><path d="M9.6 9h3.2v1.6c.6-1 1.9-1.9 3.6-1.9 2.8 0 3.9 1.8 3.9 4.5v7.3h-3.4v-5.7c0-1.5-.5-2.4-1.8-2.4-1.4 0-2.2 1-2.2 2.5v5.6H9.6z" fill="currentColor"/></svg></span>
           <span><b>LINKEDIN</b><small>akshat-tiwari-146b37296</small></span>
           <span class="cbtn__arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="cbtn rv d2" href="mailto:Akshattiwari865747@gmail.com">
+        <a class="cbtn" href="mailto:Akshattiwari865747@gmail.com">
           <span class="cbtn__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span>
           <span><b>EMAIL</b><small>Akshattiwari865747@gmail.com</small></span>
           <span class="cbtn__arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="cbtn rv d3" href="assets/Akshat_Tiwari_Resume.pdf" download="Akshat_Tiwari_Resume.pdf">
+        <a class="cbtn" href="assets/Akshat_Tiwari_Resume.pdf" download="Akshat_Tiwari_Resume.pdf">
           <span class="cbtn__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></svg></span>
           <span><b>RESUME</b><small>One-page PDF · download</small></span>
           <span class="cbtn__arrow" aria-hidden="true">↓</span>

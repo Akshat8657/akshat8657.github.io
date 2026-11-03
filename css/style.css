@@ -3,6 +3,17 @@
    Plain CSS, no framework. Colours: #0D0D0D bg · #E53935 accent · light text
    ========================================================================== */
 
+/* JetBrains Mono (SIL OFL 1.1, see assets/fonts/OFL.txt) is self-hosted: one latin variable woff2 preloaded from <head>,
+   no third-party stylesheet on the critical rendering path. Same subset Google Fonts served before. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url(../assets/fonts/jetbrains-mono-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --bg: #0D0D0D;
   --panel: #0D1117;
@@ -158,14 +169,19 @@ h1, h2, h3 { margin: 0; line-height: 1.15; }
 
 /* ---------- buttons ---------- */
 .btn {
+  position: relative; isolation: isolate; overflow: hidden;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   padding: 12px 20px; border: 1px solid var(--red); color: var(--text);
   background: rgba(229, 57, 53, .06); font-size: 13px; font-weight: 700; letter-spacing: .14em; white-space: nowrap;
-  transition: transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+  transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
 }
-.btn:hover { color: #fff; background: rgba(229, 57, 53, .16); transform: translateY(-2px); box-shadow: 0 0 0 1px var(--red-dim), 0 8px 28px rgba(229, 57, 53, .22); }
+/* hover = one red fill sweep, left to right (transform only); used on every button-like control */
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--red); transform: translateX(-101%); transition: transform .28s cubic-bezier(.2, .7, .2, 1); }
+.btn:hover::before, .btn:focus-visible::before { transform: translateX(0); }
+.btn:hover { color: #0D0D0D; transform: translateY(-2px); box-shadow: 0 0 0 1px var(--red-dim), 0 8px 28px rgba(229, 57, 53, .22); }
 .btn--solid { background: var(--red); color: #0D0D0D; }
-.btn--solid:hover { background: var(--red-2); color: #0D0D0D; }
+.btn--solid::before { background: var(--red-2); }
+.btn--solid:hover { color: #0D0D0D; }
 
 /* ---------- sections ---------- */
 .sec { padding: 76px 0; }
@@ -175,7 +191,10 @@ h1, h2, h3 { margin: 0; line-height: 1.15; }
   font-size: clamp(1rem, 2.2vw, 1.3rem); font-weight: 700; letter-spacing: .14em; color: var(--red); text-transform: uppercase;
 }
 .sec__head::before { content: ""; width: 9px; height: 9px; background: var(--red); flex: none; }
-.sec__head::after { content: ""; position: absolute; left: -5px; right: 0; bottom: -1px; height: 2px; background: linear-gradient(90deg, var(--red), rgba(229, 57, 53, .4) 30%, transparent); }
+.sec__head::after { content: ""; position: absolute; left: -5px; right: 0; bottom: -1px; height: 2px; background: linear-gradient(90deg, var(--red), rgba(229, 57, 53, .4) 30%, transparent); transform-origin: left; }
+/* the underline draws itself left to right when the header scrolls into view */
+.js .sec__head::after { transform: scaleX(0); transition: transform .3s cubic-bezier(.2, .7, .2, 1) .15s; }
+.js .sec__head.in::after { transform: scaleX(1); }
 .sec__tag { margin-left: auto; font-size: 11px; font-weight: 400; letter-spacing: .18em; color: var(--dim); white-space: nowrap; }
 
 /* ---------- cards (shared) ---------- */
@@ -208,18 +227,28 @@ h1, h2, h3 { margin: 0; line-height: 1.15; }
   transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease, color .3s ease;
 }
 .tile::after { content: ""; position: absolute; right: 8px; top: 8px; width: 5px; height: 5px; background: var(--line); transition: background .3s; }
-.tile img { width: 40px; height: 40px; transition: filter .3s ease, transform .3s ease; }
+.tile img { width: 40px; height: 40px; transition: filter .25s ease, transform .25s cubic-bezier(.2, .7, .2, 1); }
 .tile:hover { transform: translateY(-4px); border-color: var(--red); color: var(--text); box-shadow: 0 0 0 1px rgba(229, 57, 53, .25), 0 12px 30px rgba(229, 57, 53, .14); }
-.tile:hover img { filter: brightness(0) invert(1); transform: scale(1.08); }
+.tile:hover img { filter: brightness(0) invert(1); transform: scale(1.03); }
 .tile:hover::after { background: var(--red); }
 
 /* ---------- featured project ---------- */
 .proj {
   position: relative; background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--red);
   padding: 26px 28px 26px 30px; overflow: hidden;
-  transition: border-color .3s ease, box-shadow .3s ease;
+  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
 }
 .proj:hover { border-color: var(--red); box-shadow: 0 0 0 1px rgba(229, 57, 53, .22), 0 18px 44px rgba(229, 57, 53, .14); }
+.proj__top, .proj__grid, .proj__foot, .proj__title, .loading, .proj__desc { position: relative; z-index: 1; }
+/* desktop only (added by JS on fine-pointer screens): tiny 3D tilt and a glow that follows the cursor, both transform-only */
+.proj__glow {
+  position: absolute; left: -170px; top: -170px; width: 340px; height: 340px; border-radius: 50%; z-index: 0;
+  background: radial-gradient(circle, rgba(229, 57, 53, .22), rgba(229, 57, 53, 0) 62%);
+  opacity: 0; pointer-events: none; transition: opacity .3s ease; will-change: transform;
+}
+.proj:hover .proj__glow { opacity: 1; }
+.js [data-tilt].rv { transform: translateY(14px) perspective(900px) rotateX(0deg) rotateY(0deg); }
+.js [data-tilt].rv.in { transform: translateY(0) perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: opacity .6s ease, transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
 .proj::after {
   content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 22px; pointer-events: none;
   background: repeating-linear-gradient(45deg, rgba(229, 57, 53, .28) 0 1px, transparent 1px 8px);
@@ -330,10 +359,13 @@ body.lightbox-open { overflow: hidden; }
 .connect__lead { color: var(--muted); max-width: 640px; margin: -8px 0 26px; }
 .connect { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
 .cbtn {
+  position: relative; isolation: isolate; overflow: hidden;
   display: flex; align-items: center; gap: 16px; padding: 18px 20px; min-height: 84px;
   background: var(--panel); border: 1px solid var(--line); color: var(--text);
   transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
 }
+.cbtn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(229, 57, 53, .12); transform: translateX(-101%); transition: transform .3s cubic-bezier(.2, .7, .2, 1); }
+.cbtn:hover::before, .cbtn:focus-visible::before { transform: translateX(0); }
 .cbtn:hover { color: #fff; transform: translateY(-4px); border-color: var(--red); box-shadow: 0 0 0 1px rgba(229, 57, 53, .25), 0 14px 34px rgba(229, 57, 53, .16); }
 .cbtn__ico { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border: 1px solid var(--red); background: rgba(229, 57, 53, .08); color: var(--red); }
 .cbtn__ico img, .cbtn__ico svg { width: 22px; height: 22px; }
@@ -358,12 +390,76 @@ body.lightbox-open { overflow: hidden; }
 .foot__line { margin: 26px 0 8px; text-align: center; font-weight: 700; letter-spacing: .14em; font-size: clamp(.78rem, 2.2vw, .95rem); }
 .foot__copy { margin: 0; text-align: center; font-size: 11px; letter-spacing: .12em; color: var(--dim); }
 
-/* ---------- reveal on scroll ---------- */
-.js .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
-.js .rv.in { opacity: 1; transform: none; }
+/* ---------- reveal on scroll (opacity + a 14px rise, nothing else) ---------- */
+/* the transition lives on the .in state only, so leaving the intro state below snaps instead of fading */
+.js .rv { opacity: 0; transform: translateY(14px); }
+.js .rv.in { opacity: 1; transform: none; transition: opacity .55s ease, transform .55s cubic-bezier(.2, .7, .2, 1); }
 .js .rv.d1 { transition-delay: .08s; }
 .js .rv.d2 { transition-delay: .16s; }
 .js .rv.d3 { transition-delay: .24s; }
+
+/* stagger: the children of a [data-stagger] container appear one after another (70ms apart, capped at 10 steps).
+   A keyframe animation with "backwards" fill, so once it ends the element returns to its normal styles and
+   hover transitions keep working. */
+.js [data-stagger] > * { opacity: 0; }
+.js [data-stagger].in > * { opacity: 1; animation: rise .5s cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(min(var(--i, 0), 10) * 70ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ---------- boot intro (once per browser session; html.intro is set by the inline gate in <head>; the overlay itself is .boot) ---------- */
+.boot {
+  position: fixed; inset: 0; z-index: 500; display: none; align-items: center; justify-content: center;
+  background: var(--bg); color: var(--muted); font-size: 13px; letter-spacing: .14em;
+}
+html.intro .boot, .boot.out { display: flex; }
+.boot[hidden] { display: none !important; }
+html.intro { overflow: hidden; animation: boot-unlock 0s linear 4s forwards; }
+/* while the intro is up the hero is already painted beneath the opaque overlay (largest content on screen from the first paint);
+   main.js snaps it back to the pre-reveal state in the same frame the overlay starts to dissolve, then plays the entrance */
+html.intro .hero .rv, html.intro .hero__corner { opacity: 1; transform: none; }
+/* CSS-only safety net: should main.js never run, the overlay still clears itself and scrolling unlocks after 4 s */
+.boot { animation: boot-gone 0s linear 4s forwards; }
+@keyframes boot-gone { to { opacity: 0; visibility: hidden; } }
+@keyframes boot-unlock { to { overflow: auto; } }
+.boot::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px); }
+.boot.out { opacity: 0; transition: opacity .3s ease; }
+.boot__box { position: relative; width: min(560px, 100% - 48px); padding: 26px 26px 22px; border: 1px solid var(--line); border-left: 4px solid var(--red); background: var(--panel); }
+.boot__box::before { content: ""; position: absolute; right: 10px; top: 10px; width: 7px; height: 7px; background: var(--red); }
+.boot__tag { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 14px; font-size: 11px; letter-spacing: .22em; color: var(--dim); }
+.boot__tag b { color: var(--text); font-weight: 700; }
+.boot__log { margin: 0 0 16px; min-height: 4.6em; font: inherit; line-height: 1.75; color: var(--text); white-space: pre-wrap; overflow-wrap: anywhere; }
+.boot__cur { display: inline-block; width: .55em; height: 1em; margin-left: 2px; background: var(--red); vertical-align: -.15em; animation: blink .9s steps(1) infinite; }
+.boot__bar { height: 2px; background: var(--line); overflow: hidden; }
+.boot__bar i { display: block; height: 100%; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .95s cubic-bezier(.2, .7, .2, 1); }
+.boot.run .boot__bar i { transform: scaleX(1); }
+.boot__skip { margin: 14px 0 0; font-size: 10px; letter-spacing: .22em; color: var(--dim); }
+
+/* ---------- hero entrance: letters settle in with a 2-frame flicker, the red ghost jitters once (desktop only) ---------- */
+.hero__name .ch { display: inline-block; }
+.js .hero__name.decode .ch { opacity: 0; animation: settle .42s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i, 0) * 32ms); }
+@keyframes settle {
+  0% { opacity: 0; transform: translateY(8px); }
+  45% { opacity: 1; transform: translateY(-1px); }
+  60% { opacity: .35; }
+  75% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+.js .hero__name.decode::before { animation: ghost .5s steps(2) 1; }
+@keyframes ghost {
+  0% { transform: translate(-4px, 2px); opacity: .7; }
+  25% { transform: translate(3px, -1px); opacity: .45; }
+  50% { transform: translate(-6px, 1px); opacity: .3; }
+  75% { transform: translate(2px, 2px); opacity: .6; }
+  100% { transform: none; opacity: .45; }
+}
+.js .hero__name.decode::after {
+  content: attr(data-text); position: absolute; left: 22px; top: 0; z-index: -1; color: #fff; opacity: 0; pointer-events: none;
+  animation: split .45s steps(3) 1;
+}
+@keyframes split { 0% { opacity: .5; transform: translate(4px, -2px); } 60% { opacity: .25; transform: translate(-3px, 1px); } 100% { opacity: 0; transform: none; } }
+/* corner micro-texts fade in one after another once the hero is live */
+.js .hero__corner { opacity: 0; }
+.js .hero.live .hero__corner { animation: fadein .5s ease both; animation-delay: calc(var(--i, 0) * 120ms + .25s); }
+@keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
@@ -373,6 +469,13 @@ body.lightbox-open { overflow: hidden; }
   .proj__grid { grid-template-columns: 1fr; }
   .tt { max-width: 420px; }
 }
+/* lighter motion on small screens (<= 768px): shorter stagger, no tilt (JS also never attaches tilt or the name decode there) */
+@media (max-width: 768px) {
+  .js [data-stagger].in > * { animation-duration: .4s; animation-delay: calc(min(var(--i, 0), 8) * 50ms); }
+  .js [data-tilt].rv, .js [data-tilt].rv.in { transform: none; }
+  .js [data-tilt].rv:not(.in) { transform: translateY(14px); }
+}
+
 @media (max-width: 760px) {
   .nav__toggle { display: inline-flex; }
   .menu {
@@ -409,7 +512,14 @@ body.lightbox-open { overflow: hidden; }
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .js .rv { opacity: 1; transform: none; transition: none; }
-  .fx--sweep, .cursor, .dot, .loading i, .stat__off::before { animation: none; }
-  .btn, .card, .tile, .cbtn, .proj, .tile img { transition: none; }
+  html.intro .boot { display: none; }
+  html.intro { overflow: auto; }
+  /* !important on purpose: these must beat the higher-specificity ".in" / ".live" rules above */
+  .js .rv, .js [data-stagger] > *, .js [data-stagger].in > *, .js .hero__corner, .js .hero.live .hero__corner, .js .hero__name.decode .ch { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
+  .js .sec__head::after, .js .sec__head.in::after { transform: none !important; transition: none !important; }
+  .js .hero__name.decode::before, .js .hero__name.decode::after { animation: none !important; }
+  .js [data-tilt].rv, .js [data-tilt].rv.in { transform: none !important; }
+  .fx--sweep, .cursor, .dot, .loading i, .stat__off::before, .boot__cur { animation: none; }
+  .btn, .btn::before, .cbtn, .cbtn::before, .card, .tile, .tile img, .proj, .proj__glow, .gallery__item { transition: none; }
+  .proj__glow { display: none; }
 }
