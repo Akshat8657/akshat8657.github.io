@@ -287,6 +287,22 @@ h1, h2, h3 { margin: 0; line-height: 1.15; }
 .lightbox__close:hover, .lightbox__nav:hover, .lightbox__close:focus-visible, .lightbox__nav:focus-visible { border-color: var(--red); color: var(--red-2); }
 body.lightbox-open { overflow: hidden; }
 
+.gallery + .proj { margin-top: 28px; }
+.gallery--two .gallery__grid { grid-template-columns: repeat(2, 1fr); }
+
+/* mini lead-list visual (pure CSS) for the Lead Finder card */
+.lf { border: 1px solid var(--line); background: var(--bg); padding: 14px; font-size: 10px; letter-spacing: .14em; color: var(--dim); }
+.lf__head, .lf__foot { display: flex; justify-content: space-between; gap: 8px; }
+.lf__head { margin-bottom: 10px; }
+.lf__foot { margin-top: 10px; }
+.lf__foot b { color: var(--red); font-weight: 700; }
+.lf__row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-top: 1px solid #161B22; }
+.lf__av { width: 14px; height: 14px; border-radius: 50%; background: var(--red); opacity: .85; flex: none; }
+.lf__bar { height: 6px; background: #2A2E34; }
+.lf__row b { margin-left: auto; padding: 1px 6px; border: 1px solid var(--red); color: var(--red); font-weight: 700; }
+.lf__map { position: relative; height: 54px; margin-top: 8px; background: repeating-linear-gradient(0deg, #141922 0 1px, transparent 1px 9px), repeating-linear-gradient(90deg, #141922 0 1px, transparent 1px 9px), #0A0D12; border: 1px solid #1E242B; }
+.lf__map i { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--red); box-shadow: 0 0 8px var(--red); }
+
 /* placeholder for future projects */
 .proj--soon { margin-top: 18px; border-style: dashed; border-left-style: solid; opacity: .6; }
 .proj--soon:hover { opacity: .9; }
